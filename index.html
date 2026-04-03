@@ -2,61 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- CRITICAL: Viewport meta tag ensures correct scaling on mobile devices -->
+    <!-- CRITICAL: Ensures the app scales correctly on all phones -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weight Tracker SPA</title>
+    <title>Daily Weight Tracker</title>
+    <!-- Load Chart.js dependency from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* --- MOBILE FIRST STYLES --- */
+        /* ========================================= */
+        /* 📱 MOBILE-FIRST STYLING (Optimized for Phones) */
+        /* ========================================= */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e9ecef; /* Slightly lighter background for contrast */
+            background-color: #f0f2f5; /* Light grey background */
             color: #333;
             margin: 0;
-            padding: 15px; /* Reduced padding for smaller screens */
+            padding: 10px; /* Small padding for mobile edges */
         }
 
         .container {
-            max-width: 600px; /* Constrain width on large screens, but allow full width on mobile */
+            max-width: 650px; /* Max width on desktop, but flexible on mobile */
             margin: 0 auto;
             background: #ffffff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             text-align: center;
-            color: #17a2b8; /* A more vibrant color */
-            margin-bottom: 25px;
-            font-size: 1.8em;
+            color: #17a2b8; /* Teal/Cyan for branding */
+            margin-bottom: 30px;
+            font-size: 1.9em;
         }
 
-        /* --- FORM OPTIMIZATION --- */
+        /* --- FORM STYLING (Primary Action Block) --- */
         #weightForm {
             display: flex;
             flex-direction: column; /* Stack inputs vertically by default (Mobile First) */
             gap: 15px;
-            margin-bottom: 30px;
             padding: 20px;
             border: 2px solid #adb5bd;
-            border-radius: 10px;
+            border-radius: 12px;
             background-color: #f8f9fa;
+            margin-bottom: 30px;
         }
 
         #weightForm input[type="number"],
         #weightForm input[type="date"] {
-            padding: 14px; /* Increased padding for easier tapping */
+            padding: 15px; /* Larger touch target */
             border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 1.1em;
             width: 100%;
-            box-sizing: border-box; /* Ensures padding doesn't break width */
+            box-sizing: border-box;
         }
 
         #weightForm button {
-            padding: 15px; /* Larger touch target */
-            background-color: #28a745;
+            padding: 15px; /* Large touch target */
+            background-color: #28a745; /* Green for success/record */
             color: white;
             border: none;
             border-radius: 8px;
@@ -69,16 +72,123 @@
             background-color: #218837;
         }
         #weightForm button:active {
-             transform: scale(0.98); /* Visual feedback on tap */
+             transform: scale(0.99); /* Visual feedback on tap */
         }
 
 
-        /* --- DATA SECTION LAYOUT (STACKED BY DEFAULT) --- */
+        /* --- DATA LAYOUT (Graph and History) --- */
         .data-section {
             display: flex;
             flex-direction: column; /* Stacked vertically by default for mobile */
-            gap: 30px;
+            gap: 35px;
         }
 
         .graph-container, .history-container {
-            width:
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- HISTORY LOG STYLING (Crucial for mobile readability) --- */
+        #historyList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+
+        .record-item:last-child {
+            border-bottom: none;
+        }
+
+        .record-details {
+            flex-grow: 1;
+        }
+
+        .record-date {
+            font-weight: bold;
+            color: #5a626d;
+            display: block;
+            font-size: 0.9em;
+        }
+
+        .record-weight {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #17a2b8;
+        }
+
+        /* Delete Button Optimization */
+        .delete-btn {
+            background-color: #dc3545; /* Red for delete */
+            color: white;
+            border: none;
+            padding: 8px 12px; /* Larger touch target */
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-left: 15px;
+            transition: background-color 0.2s;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+
+        /* ========================================= */
+        /* 🖥️ DESKTOP OVERRIDES (For larger screens) */
+        /* ========================================= */
+        @media (min-width: 768px) {
+            .data-section {
+                flex-direction: row; /* Side-by-side layout on desktop */
+                gap: 35px;
+            }
+            .graph-container, .history-container {
+                flex: 1; /* Both sections take equal width */
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🏋️ Daily Weight Tracker</h1>
+
+        <!-- WEIGHT INPUT FORM -->
+        <form id="weightForm">
+            <label for="dateInput" style="font-weight: bold; margin-bottom: 5px;">Date:</label>
+            <input type="date" id="dateInput" required>
+            
+            <label for="weightInput" style="font-weight: bold; margin-top: 10px; margin-bottom: 5px;">Weight (e.g., in kg/lbs):</label>
+            <input type="number" id="weightInput" step="0.1" min="1" required placeholder="Enter your weight">
+            
+            <button type="submit">Record Weight</button>
+        </form>
+
+        <!-- DATA DISPLAY SECTION -->
+        <div class="data-section">
+            
+            <!-- WEEKLY TREND GRAPH -->
+            <div class="graph-container">
+                <h3>📈 Weekly Trend (Last 7 Days)</h3>
+                <canvas id="weightChart"></canvas>
+            </div>
+
+            <!-- HISTORY LOG -->
+            <div class="history-container">
+                <h3>📜 History Log</h3>
+                <ul id="historyList">
+                    <!-- Records will be injected here by JavaScript -->
+                    <li style="text-align: center;
