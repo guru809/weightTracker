@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- CRITICAL: Viewport meta tag ensures correct scaling on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight Tracker SPA</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* --- MOBILE FIRST STYLES --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef; /* Slightly lighter background for contrast */
+            color: #333;
+            margin: 0;
+            padding: 15px; /* Reduced padding for smaller screens */
+        }
+
+        .container {
+            max-width: 600px; /* Constrain width on large screens, but allow full width on mobile */
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #17a2b8; /* A more vibrant color */
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        /* --- FORM OPTIMIZATION --- */
+        #weightForm {
+            display: flex;
+            flex-direction: column; /* Stack inputs vertically by default (Mobile First) */
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #adb5bd;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+        }
+
+        #weightForm input[type="number"],
+        #weightForm input[type="date"] {
+            padding: 14px; /* Increased padding for easier tapping */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1.1em;
+            width: 100%;
+            box-sizing: border-box; /* Ensures padding doesn't break width */
+        }
+
+        #weightForm button {
+            padding: 15px; /* Larger touch target */
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        #weightForm button:hover {
+            background-color: #218837;
+        }
+        #weightForm button:active {
+             transform: scale(0.98); /* Visual feedback on tap */
+        }
+
+
+        /* --- DATA SECTION LAYOUT (STACKED BY DEFAULT) --- */
+        .data-section {
+            display: flex;
+            flex-direction: column; /* Stacked vertically by default for mobile */
+            gap: 30px;
+        }
+
+        .graph-container, .history-container {
+            width:
